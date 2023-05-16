@@ -1,8 +1,0 @@
-common:
-  t1: test1
-  t2: test2
-  t3: test3
-private:
-  t1: private1
-  t2: private2
-  t3: private3
