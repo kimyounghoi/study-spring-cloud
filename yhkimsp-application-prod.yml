@@ -1,0 +1,8 @@
+common:
+  t1: prod-test1
+  t2: prod-test2
+  t3: prod-test3
+private:
+  t1: prod-private1
+  t2: prod-private2
+  t3: prod-private3

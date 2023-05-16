@@ -1,0 +1,8 @@
+common:
+  t1: dev-test1
+  t2: dev-test2
+  t3: dev-test3
+private:
+  t1: dev-private1
+  t2: dev-private2
+  t3: dev-private3
