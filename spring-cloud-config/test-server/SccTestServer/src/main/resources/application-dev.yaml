@@ -1,0 +1,77 @@
+
+server:
+  port: 8888
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          # git address
+          uri: https://github.com/kimyounghoi/study-spring-cloud
+          # git config files path
+          search-paths: test-cloud-config-files/**
+          # git branch name
+          default-label: main
+          private-key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            Proc-Type: 4,ENCRYPTED
+            DEK-Info: AES-128-CBC,0B3BB5A7C9F989331B9714E3772B2726
+
+            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
+            -----END RSA PRIVATE KEY-----
+          passphrase: kimyhcj
+          host-key: AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+          #uri: git@github.com:kimyounghoi/study-spring-cloud.git
+          ignore-local-ssh-settings: true
+          strict-host-key-checking: false
+          host-key-algorithm: ecdsa-sha2-nistp256
