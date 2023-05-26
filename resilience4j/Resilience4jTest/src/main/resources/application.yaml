@@ -1,0 +1,48 @@
+server:
+  port: 8081
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 5
+        waitDuration: 2s
+    instances:
+      getProductPrice:
+        baseConfig: default
+        maxRetryAttempts: 3
+        waitDuration: 1s
+    retry-aspect-order: 2
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true # open -> half 자동변환 on/off
+        slidingWindowType: TIME_BASED # TIME_BASED, COUNT_BASED
+        slidingWindowsSize: 100 # 통계 큐 사이즈
+        permittedNumberOfCallsHalfOpenState: 10 # half 내 통계 큐 사이즈
+        waitDurationInOpenState: 10000  # circuit open 시간 (default 60_000)
+        minimumNumberOfCalls: 3 # 최소한 n번은 호출해야 실패 비율을 계산하겠다.
+        slowCallRateThreshold: 100 # 느린 응답시간 요청의 비율이 n% 이상 되면 circuit open
+        slowCallDurationThreshold: 500 # 느린 응답시간 판단 기준 [ms] - hystrix 의 timeout 값과 같음
+        failureRateThreshold: 50 # 실패한 호출에 대한 임계치(percentage), 이 값을 초과하면 circuit open
+    instances:
+      getProductPrice:
+        baseConfig: default
+    circuit-breaker-aspect-order: 1
+  ratelimiter:
+    instances:
+      getProductPrice:
+        limitForPeriod: 5 # cycle 동안 호출할 수 있는 횟수
+        limitRefreshPeriod: 1s # cycle 이 가지는 주기, cycle 주기가 끝나면 호출 가능 횟수는 다시 리셋됨, default: 500ns
+        timeoutDuration: 300ms # 호출 thread 가 rateLimit 에 대해서 접근 허가를 얻기 위해 대기하는 시간, default: 5s
+      getProductPrice2:
+
+  timelimiter:
+    instances:
+      getProductPrice:
+        timeoutDuration: 2s
+  bulkhead:
+    instances:
+      bulkTest:
+        maxConcurrentCalls: 5 # bulkhead 에서 최대로 허용할 병렬 실행 수
+        #maxWaitDuration: 0 # bulkhead 가 포화 상태일 때 진입하려는 thread 를 blocking 할 최대 시간
