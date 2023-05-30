@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+    <property name="LOG_DIR" value="/yhkim-eureka-client-2/log" />
+    <property name="LOG_PATH_SYSTEM" value="${LOG_DIR}/client.log"/>
+
+    <!-- Console Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %-5level %d{HH:mm:ss.SSS} [%thread %F:%L] - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    
+    <!-- System 공통 로그 Rolling File Appender -->
+    <appender name="SYSTEM_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH_SYSTEM}</file>
+        <encoder>
+            <pattern>%-5level %d{HH:mm:ss.SSS} [%thread %F:%L] - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/app_%d{yyyy-MM-dd}_%i.log.gz</fileNamePattern> <!-- 일자별 압축 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize> <!-- 파일당 최고 용량 10MB -->
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>180</maxHistory> <!-- 일자별 로그파일 최대 보관주기(일단위) 만약 해당 설정일 이상된 파일은 자동으로 제거-->
+        </rollingPolicy>
+    </appender>
+
+    <springProfile name="dev"> <!-- 개발 모드 -->
+        <logger name="system_logger" level="DEBUG" additivity="false"><appender-ref ref="CONSOLE"/></logger>
+        <root level="DEBUG" additivity="false"><appender-ref ref="CONSOLE"/></root>
+    </springProfile>
+
+    <springProfile name="alpha, beta, prod"> <!-- 운영 모드 -->
+        <logger name="system_logger" level="ERROR" additivity="false"><appender-ref ref="SYSTEM_FILE"/></logger>
+        <root level="ERROR" additivity="false"><appender-ref ref="SYSTEM_FILE"/></root>
+    </springProfile>
+
+</configuration>
