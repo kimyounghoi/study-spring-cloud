@@ -1,0 +1,22 @@
+server:
+  port: 8883
+spring:
+  application:
+    name: yhkim-eureka-client-b
+  profiles:
+    active: dev
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8881/eureka/
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 5
+        waitDuration: 2s
+    instances:
+      callExternalApi:
+        baseConfig: default
+        maxRetryAttempts: 3
+        waitDuration: 1s
